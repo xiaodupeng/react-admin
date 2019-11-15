@@ -6,16 +6,15 @@ import { switchMenu, switchMenuKey} from '../../redux/action/index'
 import { Menu, Icon } from 'antd'
 import { NavLink } from 'react-router-dom'
 const { SubMenu } = Menu;
-
 class NavBar extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            menuTreeNode:""
+            menuTreeNode:"",
         } 
     }
     componentDidMount(){
-        console.log(this.props)
+        // console.log(this.props)
         const menuTreeNode = this.getMenu(MenuList)
         this.setState({
             menuTreeNode:menuTreeNode
@@ -38,21 +37,43 @@ class NavBar extends React.Component{
                     </SubMenu>
                 )
             }
-            return  (<Menu.Item key={item.key}>
+            return  <Menu.Item key={item.key}>
                             <NavLink to={item.key}> 
                                 {item.icon ? <Icon type={item.icon} /> : null}
                                 <span>{item.title}</span>
                             </NavLink>
-                    </Menu.Item>)
+                    </Menu.Item>
         })
     }
+
+    // 导出出面包屑数组
+    selectBreadcrumb = (FatherKey,ChildKey) => {
+        const titleArray = []
+        MenuList.forEach((item) => {
+            if (item.key === FatherKey) {
+                titleArray.push(item.title);
+            }
+            if (item.children) {              
+                item.children.forEach((sItem) => {
+                    if (sItem.key === ChildKey) {
+                        titleArray.push(sItem.title);      
+                    }
+                });
+            }
+        });
+        return titleArray;
+    };
     // 菜单点击
     handleClick = ({ item, key }) => {
+        const FatherKey = '/' + key.split('/')[1] //父元素的key,
+        const ChildKey = key //子元素的key,
+        const titleArray = this.selectBreadcrumb(FatherKey,ChildKey);
         // 对象结构dispatch
-        const { dispatch } = this.props
-        // 触发dispatch 调用action定义的switchMenu方法，并传值
-        dispatch(switchMenu(item.node.innerText))
-        dispatch(switchMenuKey(key))
+        // const { dispatch } = this.props
+        // // 触发dispatch 调用action定义的switchMenu方法，并传值
+        // dispatch(switchMenu(item.node.innerText))
+        // dispatch(switchMenuKey(key))
+        this.props.handleClick(titleArray, key); // 以下是调用mapDispatchToProps方法写法
     };
     render(){
         return (
@@ -80,4 +101,13 @@ const mapStateToProps = state => {
         menuNameKey:state.menuNameKey
     }
 }
-export default connect(mapStateToProps)(NavBar);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      handleClick(titleArray, key) {
+        dispatch(switchMenu(titleArray));
+        dispatch(switchMenuKey(key))
+      }
+    }
+};
+export default connect(mapStateToProps,mapDispatchToProps)(NavBar);

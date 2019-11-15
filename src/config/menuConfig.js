@@ -1,29 +1,29 @@
 const MenuList = [
     {
         title: '首页',
-        key: "/admin/home",
+        key: "/home",
         icon:'home'
     },
     {
         title: 'UI',
-        key: '/admin/ui',
+        key: '/ui',
         icon:'pie-chart',
         children: [
             {
                 title: '按钮',
-                key: '/admin/ui/buttons',
+                key: '/ui/buttons',
             },
             {
                 title: '父子传值',
-                key: '/admin/ui/passValue',
+                key: '/ui/passValue',
             },
             {
                 title: 'item',
-                key: '/admin/ui/item',
+                key: '/ui/item',
                 children:[
                     {
                         title: 'item1',
-                        key: '/admin/ui/item1',
+                        key: '/ui/item1',
                     }
                 ]
             }

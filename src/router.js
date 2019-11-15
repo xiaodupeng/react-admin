@@ -20,26 +20,26 @@ class IRouter extends React.Component{
             <HashRouter>
                 <App>
                     <Switch>
-                        <Route exact path="/" component={Login}/>
-                        <Route path="/admin"
+                        <Route exact path="/login" component={Login}/>
+                        <Route path="/"
                         // render加载嵌套子路的方法
                             render = {() =>
                                 (   
                                     token?
                                     <Admin>
                                         <Switch>
-                                            <Route path="/admin/home" component={Home}/>
-                                            <Route path="/admin/ui/buttons" component={Button}/>
-                                            <Route path="/admin/ui/passValue" component={PassValue}/>
+                                            <Route path="/home" component={Home}/>
+                                            <Route path="/ui/buttons" component={Button}/>
+                                            <Route path="/ui/passValue" component={PassValue}/>
 
                                             {/*以上都匹配不到则跳转到NotFound*/}
                                             <Route component={NotFound}/> 
                                         </Switch>
-                                    </Admin>:<Redirect to="/" /> 
+                                    </Admin>:<Redirect to="/login" /> 
                                 )
                             }
                         />
-                        <Redirect to="/" /> 
+                        <Redirect to="/login" /> 
                     </Switch>
                 </App>
             </HashRouter>

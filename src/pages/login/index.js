@@ -13,7 +13,7 @@ class NormalLoginForm extends React.Component{
             // 对象结构dispatch
             const { dispatch } = this.props
             dispatch(changeToken(true))
-            this.props.history.push('/admin/home');
+            this.props.history.push('/home');
             console.log('Received values of form: ', values);
           }
         });

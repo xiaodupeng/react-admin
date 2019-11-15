@@ -7,8 +7,8 @@ import { type } from '../action/index'
 const initState = {
     token:false,
     collapsed:false,
-    menuNames:"首页",
-    menuNameKey:"/admin/home"
+    menuNames:["首页"],
+    menuNameKey:"/home"
 }
 
 const rootReducer = (state=initState, action) => {

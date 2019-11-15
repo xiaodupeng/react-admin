@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { switchColl,logout} from '../../redux/action/index'
 import { getUserInfo } from '../../api/user'
-import {Icon, Button } from 'antd';
+import {Icon, Button ,Breadcrumb} from 'antd';
 import $ from 'jquery'
 
 class Header extends React.Component{
@@ -58,7 +58,15 @@ class Header extends React.Component{
                         <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
                         </Button>
                         <span style={{marginLeft:"20px"}}>
-                           {this.props.menuNames}
+                        <Breadcrumb>
+                            {
+                                this.props.menuNames.map((item) => {
+                                    return (
+                                        <Breadcrumb.Item key={ item }>{ item }</Breadcrumb.Item>
+                                    );
+                                })
+                            }
+                            </Breadcrumb>
                         </span>
                 </div>
                 <div>
