@@ -7,7 +7,7 @@ import { type } from '../action/index'
 const initState = {
     token:false,
     collapsed:false,
-    menuNames:["首页"],
+    menuTitleArr:[{name:"首页",key:"/home"}],
     menuNameKey:"/home"
 }
 
@@ -30,7 +30,7 @@ const ebikeData = ( state, action )=>{
         case type.SWITCH_MENU:
             return {
                 ...state,
-                menuNames:action.menuNames
+                menuTitleArr:action.menuTitleArr
             }
         case type.SWITCH_MENUKEY:
             return {

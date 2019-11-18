@@ -23,7 +23,7 @@ const MenuList = [
                 children:[
                     {
                         title: 'item1',
-                        key: '/ui/item1',
+                        key: '/ui/item/item1',
                     }
                 ]
             }

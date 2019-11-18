@@ -4,7 +4,7 @@ import MenuList from '../../config/menuConfig'
 import { connect } from 'react-redux'
 import { switchMenu, switchMenuKey} from '../../redux/action/index'
 import { Menu, Icon } from 'antd'
-import { NavLink } from 'react-router-dom'
+import { NavLink , withRouter} from 'react-router-dom'
 const { SubMenu } = Menu;
 class NavBar extends React.Component{
     constructor(props){
@@ -14,11 +14,16 @@ class NavBar extends React.Component{
         } 
     }
     componentDidMount(){
-        // console.log(this.props)
         const menuTreeNode = this.getMenu(MenuList)
         this.setState({
             menuTreeNode:menuTreeNode
         })
+        this.props.history.listen(route => {
+            this.changeMenuKey(route.pathname)
+        })
+    }
+    changeMenuKey(key){
+        this.props.changeMenuKey(key);
     }
     // 获取菜单——递归调用法
     getMenu = (data)=>{
@@ -45,35 +50,28 @@ class NavBar extends React.Component{
                     </Menu.Item>
         })
     }
-
-    // 导出出面包屑数组
-    selectBreadcrumb = (FatherKey,ChildKey) => {
-        const titleArray = []
-        MenuList.forEach((item) => {
-            if (item.key === FatherKey) {
-                titleArray.push(item.title);
-            }
-            if (item.children) {              
-                item.children.forEach((sItem) => {
-                    if (sItem.key === ChildKey) {
-                        titleArray.push(sItem.title);      
-                    }
-                });
-            }
-        });
-        return titleArray;
-    };
     // 菜单点击
     handleClick = ({ item, key }) => {
-        const FatherKey = '/' + key.split('/')[1] //父元素的key,
-        const ChildKey = key //子元素的key,
-        const titleArray = this.selectBreadcrumb(FatherKey,ChildKey);
+        let obj = {
+            name:item.node.innerText,
+            key:key
+        }
+        let arr = this.props.menuTitleArr
+        
+        if(arr.map(e=>e.name).includes(obj.name)){
+            // 以下是调用mapDispatchToProps方法写法
+            this.props.handleClick(arr, key);
+            return
+        }else{
+            arr.push(obj)
+            // 以下是调用mapDispatchToProps方法写法
+            this.props.handleClick(JSON.parse(JSON.stringify(arr)), key); 
+        }
         // 对象结构dispatch
         // const { dispatch } = this.props
         // // 触发dispatch 调用action定义的switchMenu方法，并传值
         // dispatch(switchMenu(item.node.innerText))
         // dispatch(switchMenuKey(key))
-        this.props.handleClick(titleArray, key); // 以下是调用mapDispatchToProps方法写法
     };
     render(){
         return (
@@ -98,16 +96,20 @@ class NavBar extends React.Component{
 const mapStateToProps = state => {
     return {
         collapsed : state.collapsed,
+        menuTitleArr:state.menuTitleArr,
         menuNameKey:state.menuNameKey
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      handleClick(titleArray, key) {
-        dispatch(switchMenu(titleArray));
+      handleClick(arr, key) {
+        dispatch(switchMenu(arr));
+        dispatch(switchMenuKey(key))
+      },
+      changeMenuKey(key){
         dispatch(switchMenuKey(key))
       }
     }
 };
-export default connect(mapStateToProps,mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(NavBar));

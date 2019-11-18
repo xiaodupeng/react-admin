@@ -34,10 +34,10 @@ export function switchColl (val) {
 }
 
 // 菜单点击切换，修改面包屑名称 ,传入值
-export function switchMenu (menuNames) {
+export function switchMenu (menuTitleArr) {
     return {
         type:type.SWITCH_MENU,
-        menuNames
+        menuTitleArr
     }
 }
 

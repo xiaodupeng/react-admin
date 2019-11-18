@@ -1,0 +1,21 @@
+.MainHeader{
+    padding: 20px;
+    .tag{
+        color: #fff;
+        display: inline-block;
+        padding: 5px;
+        text-align: center;
+        margin-right: 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        span{
+            margin-right: 5px;
+        }
+    }
+}
+.activetag{
+    background: #87d068;
+}
+.noactivetag{
+    background: #ccc;
+}
