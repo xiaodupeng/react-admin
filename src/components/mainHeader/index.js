@@ -25,7 +25,7 @@ class MainHeader extends React.Component{
     CloseTag(e,item){
         e.stopPropagation()
         if(this.props.menuTitleArr.length>1){
-            this.props.menuTitleArr.map((items,index)=>{
+            this.props.menuTitleArr.forEach((items,index)=>{
                 if(items.key === item.key){
                     this.props.menuTitleArr.splice(index,1);
                     if(this.props.history.location.pathname === item.key){
