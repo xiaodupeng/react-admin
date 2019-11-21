@@ -12,13 +12,26 @@ class MainHeader extends React.Component{
         currentKey:"/home"
     };
     componentDidMount(){
-        this.props.history.listen(route => {
-            this.setState({
-                currentKey:route.pathname
-            })
-        })
+        //监听路由的两种方式
+
+        // this.props.history.listen(route => {
+        //     console.log(route)
+        //     this.setState({
+        //         currentKey:route.pathname
+        //     })
+        // })
+        window.addEventListener('hashchange',this.listenRoute)
+    }
+    // 此方法在组件被卸载前调用，可以在这里执行一些清理工作，比如清楚组件中使用的定时器，清除componentDidMount中手动创建的DOM元素等，以避免引起内存泄漏
+    componentWillUnmount(){
+        window.removeEventListener('hashchange',this.listenRoute)
     }
 
+    listenRoute = ()=>{
+        this.setState({
+            currentKey:window.location.hash.substring(1)
+        })
+    }
     handleClick(item,index){
         this.props.history.push(item.key);
     }

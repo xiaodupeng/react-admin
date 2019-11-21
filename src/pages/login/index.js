@@ -1,20 +1,30 @@
 import React from 'react'
 import './index.scss'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import SlideBlock from '../../components/slideBlock/index'
+import { Form, Icon, Input, Checkbox } from 'antd';
 import { connect } from 'react-redux'
 import { changeToken } from '../../redux/action/index'
 
 
 class NormalLoginForm extends React.Component{
+    state = {
+        validateStatus:false
+    }
     handleSubmit = e => {
-        e.preventDefault();
+        // e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
             // 对象结构dispatch
             const { dispatch } = this.props
             dispatch(changeToken(true))
-            this.props.history.push('/home');
+            this.setState({
+                validateStatus:true
+            })
             console.log('Received values of form: ', values);
+          }else{
+              this.setState({
+                validateStatus:false
+              })
           }
         });
     };
@@ -44,15 +54,18 @@ class NormalLoginForm extends React.Component{
                             />,
                         )}
                     </Form.Item>
+                    <SlideBlock validateStatus={this.state.validateStatus} handleSubmit={this.handleSubmit}></SlideBlock>
                     <Form.Item>
                         {getFieldDecorator('remember', {
                             valuePropName: 'checked',
                             initialValue: true,
                         })(<Checkbox>记住我</Checkbox>)}
-                        <Button type="primary" htmlType="submit" className="login-form-button">
+                        {/* <Button type="primary" htmlType="submit" className="login-form-button">
                             登录
-                        </Button>
+                        </Button> */}
+                        
                     </Form.Item>
+                    
                 </Form>
            </div>
         )
